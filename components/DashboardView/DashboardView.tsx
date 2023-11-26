@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import { IconFilePercent } from '@tabler/icons-react';
 import { EmailBanner } from '../EmailBanner/EmailBanner';
 import StepperDirectivas from '../StepperDirectivas/StepperDirectivas';
+import { useState } from 'react';
 
 export default function DashboardView() {
     const {data : session} = useSession();
@@ -16,6 +17,7 @@ export default function DashboardView() {
     let dataGraphs;
     let data;
     const Icon = IconFilePercent;
+    const [valueAgendar, setValueAgendar] = useState(false);
 
   if (session?.user.rol == 2)
   {
@@ -102,8 +104,14 @@ export default function DashboardView() {
           </>
            :
             <div>
+              {valueAgendar ? 
               <StepperDirectivas></StepperDirectivas>
-              <EmailBanner></EmailBanner>
+              :
+              <EmailBanner
+              value ={valueAgendar}
+              setValue = {setValueAgendar}
+            ></EmailBanner>
+              }
             </div>
            }
 

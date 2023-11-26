@@ -39,11 +39,11 @@ export function CollapseDesktop({
 
   if (session?.user.rol == 1)
   {
-    mockdata = mockdata_profesional;
+    mockdata = mockdata_paciente;
   }
   else if (session?.user.rol == 2)
   {
-    mockdata = mockdata_paciente;
+    mockdata = mockdata_profesional;
   }
   const links = mockdata?.map((item) => <LinksGroup {...item} key={item.label} />);
 
