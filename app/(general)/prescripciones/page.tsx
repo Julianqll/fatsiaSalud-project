@@ -4,8 +4,7 @@ import { useSession } from "next-auth/react";
 import UserListView from "../../../components/UserListView/UserListView";
 import { redirect } from "next/navigation";
 
-export default function CitasPage() {
-
+export default function PrescripcionesPage() {
     const {data : session} = useSession();
     if (!session) {
       redirect("/signIn")
@@ -14,11 +13,11 @@ export default function CitasPage() {
   
     if (session?.user.rol == 1)
     {
-      type = "citas_paciente";
+      type = "prescripciones_paciente";
     }
     else if (session?.user.rol == 2)
     {
-      type = "citas_medico_more";
+      type = "prescripciones_medico";
   
     }
     return (

@@ -96,6 +96,67 @@ export function TableSelection({
       );
     });
   }
+  else if (type === 'prescripciones_paciente')
+  {
+    headers = ["ID","Medicamento", "Dosis", "Frecuencia","Fecha asignada", "Duracion", "Detalles"];
+     rows = data?.Prescripcion.map((item:any) => {
+      return (
+        <Table.Tr key={item.IdPrescripcion}>
+          <Table.Td>
+            <Group gap="sm">
+              <Text size="sm" fw={500}>
+                {item.IdPrescripcion}
+              </Text>
+            </Group>
+          </Table.Td>
+          <Table.Td>{item.Medicamento}</Table.Td>
+          <Table.Td>{item.Dosis}</Table.Td>
+          <Table.Td>{item.Frecuencia}</Table.Td>
+          <Table.Td>{item.Fecha}</Table.Td>
+          <Table.Td>{item.Duracion}</Table.Td>
+          <Table.Td>
+          <Button 
+              ml={15} 
+              rightSection={<IconFileInfo size={14} />} 
+              >
+                Ver más
+            </Button>
+          </Table.Td>
+        </Table.Tr>
+      );
+    });
+  }
+  if (type === 'prescripciones_medico')
+  {
+    headers = ["ID","Medicamento", "Dosis", "Frecuencia","Fecha asignada", "Duracion", "Paciente", "Detalles"];
+     rows = data?.Prescripcion.map((item:any) => {
+      return (
+        <Table.Tr key={item.IdPrescripcion}>
+          <Table.Td>
+            <Group gap="sm">
+              <Text size="sm" fw={500}>
+                {item.IdPrescripcion}
+              </Text>
+            </Group>
+          </Table.Td>
+          <Table.Td>{item.Medicamento}</Table.Td>
+          <Table.Td>{item.Dosis}</Table.Td>
+          <Table.Td>{item.Frecuencia}</Table.Td>
+          <Table.Td>{item.Fecha}</Table.Td>
+          <Table.Td>{item.Duracion}</Table.Td>
+          <Table.Td>{item.Paciente.Nombres} {item.Paciente.Apellidos}</Table.Td>
+          <Table.Td>
+          <Button 
+              ml={15} 
+              rightSection={<IconFileInfo size={14} />} 
+              >
+                Ver más
+            </Button>
+          </Table.Td>
+        </Table.Tr>
+      );
+    });
+  }
 
   let theaders = headers.map((item:any) => {
     return (

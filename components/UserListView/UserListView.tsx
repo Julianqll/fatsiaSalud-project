@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import { IconFileInfo } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { CITA_MEDICO, CITA_MEDICO_MORE, CITA_PACIENTE } from '../../queries/queriesCita';
+import { PRESCRIPCIONES_MEDICO, PRESCRIPCIONES_PACIENTE } from '../../queries/queriesPrescripcion';
 
 export default function UserListView({type}: any) {
     const router = useRouter();
@@ -32,6 +33,18 @@ export default function UserListView({type}: any) {
     {
         query_type = CITA_PACIENTE;
         title = "Citas agendadas";
+        variables = true;
+    }
+    else if (type === 'prescripciones_paciente')
+    {
+        query_type = PRESCRIPCIONES_PACIENTE;
+        title = "Mis prescripciones";
+        variables = true;
+    }
+    else if (type === 'prescripciones_medico')
+    {
+        query_type = PRESCRIPCIONES_MEDICO;
+        title = "Prescripciones asignadas";
         variables = true;
     }
 
