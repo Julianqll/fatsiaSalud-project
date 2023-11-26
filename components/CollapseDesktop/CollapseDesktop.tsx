@@ -3,36 +3,27 @@ import { useDisclosure } from '@mantine/hooks';
 import { AppShell, Burger, Group, ScrollArea, Skeleton, Title, Text } from '@mantine/core';
 import {
     IconNotes,
-    IconCalendarStats,
-    IconPlaneInflight,
-    IconUsers,
-    IconTable,
-    IconFilePencil
+    IconReportMedical,
+    IconMedicineSyrup
   } from '@tabler/icons-react';
 import { LinksGroup } from '../NavbarLinksGroup/NavbarLinksGroup';
 import classes from './CollapseDesktop.module.css';
 import { UserButton } from '../UserButton/UserButton';
 import { useSession } from 'next-auth/react';
-import { Session } from 'next-auth';
 import { ActionToggle } from '../ActionToggle/ActionToggle';
 
 
-  const mockdata_admin = [
-    { label: 'Aviones', icon: IconPlaneInflight, link: '/aviones'},
-    { label: 'Reportes de Inspecciones', icon: IconNotes , link: '/reportes-inspecciones'},
-    { label: 'Reportes de Cambios', icon: IconNotes , link: '/reportes-cambios-piezas'},
-    { label: 'Usuarios', icon: IconUsers, link: '/usuarios'},
+  const mockdata_profesional = [
+    { label: 'Citas', icon: IconReportMedical , link: '/citas'},
+    { label: 'Prescripciones', icon: IconMedicineSyrup , link: '/prescripciones'},
   ];
 
-  const mockdata_gestor = [
-    { label: 'Inventario', icon: IconTable , link: '/inventario'},
-    { label: 'Solicitudes', icon: IconFilePencil, link: '/solicitudes'},
+  const mockdata_paciente = [
+    { label: 'Citas', icon: IconReportMedical, link: '/citas'},
+    { label: 'Prescripciones', icon: IconMedicineSyrup , link: '/prescripciones'},
+    { label: 'Historial Médico', icon: IconNotes , link: '/historial-medico'},
   ];
 
-  const mockdata_tecnico = [
-    { label: 'Aviones', icon: IconPlaneInflight, link: '/aviones'},
-    { label: 'Reportes de Inspecciones', icon: IconNotes , link: '/reportes-inspecciones'},
-    { label: 'Reportes de Cambios', icon: IconNotes , link: '/reportes-cambios-piezas'},  ];
 
 export function CollapseDesktop({
     children
@@ -48,16 +39,11 @@ export function CollapseDesktop({
 
   if (session?.user.rol == 1)
   {
-    mockdata = mockdata_admin;
+    mockdata = mockdata_profesional;
   }
   else if (session?.user.rol == 2)
   {
-    mockdata = mockdata_tecnico;
-
-  }
-  else if (session?.user.rol == 4)
-  {
-    mockdata = mockdata_gestor;
+    mockdata = mockdata_paciente;
   }
   const links = mockdata?.map((item) => <LinksGroup {...item} key={item.label} />);
 
@@ -81,7 +67,7 @@ export function CollapseDesktop({
                 href="/dashboard"
             >
               <Title order={2} ta="center">
-                AeroGuard
+                Fatsia Salud
               </Title>
             </Text>
           </Group>
