@@ -105,7 +105,10 @@ export default function DashboardView() {
            :
             <div>
               {valueAgendar ? 
-              <StepperDirectivas></StepperDirectivas>
+              <StepperDirectivas
+              value ={valueAgendar}
+              setValue = {setValueAgendar}
+              ></StepperDirectivas>
               :
               <EmailBanner
               value ={valueAgendar}

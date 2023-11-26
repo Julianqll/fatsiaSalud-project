@@ -14,11 +14,13 @@ query GetCita {
 `;
 
 export const INSERT_CITA = gql`
-mutation InsertCita($object: CitaMedica_insert_input = {}) {
-    insert_CitaMedica_one(object: $object) {
-      IDCita
-    }
+mutation Insertarcita($object: CitaMedica_insert_input = {}) {
+  insert_CitaMedica_one(object: $object) {
+    IDCita
+    Hora
+    Fecha
   }
+}
 `;
 
 export const CITA_MEDICO = gql`
@@ -80,3 +82,5 @@ query CitaXPaciente($_eq: Int) {
 
 
 `;
+
+

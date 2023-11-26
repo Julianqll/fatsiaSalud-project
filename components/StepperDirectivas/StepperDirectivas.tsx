@@ -6,38 +6,33 @@ import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import Selector from '../Selector/Selector';
 import { DateInput, TimeInput } from '@mantine/dates';
+import { useSession } from 'next-auth/react';
+import { client } from '../../apolloClient';
+import { INSERT_CITA } from '../../queries/queriesCita';
 
-function StepperDirectivas() { 
+function StepperDirectivas({value, setValue} : any) { 
   const [active, setActive] = useState(0);
   const [valueMotivo, setValueMotivo] = useState<string | null>(null);
   const [valueHora, setValueHora] = useState("");
+  const [valueDescripcion, setValueDescripcion] = useState("");
   const [valueFecha, setValueFecha] = useState<Date|null>(new Date());
   const [arrayForms, setArrayForms] = useState<any>([]);
+  const {data : session} = useSession();
 
-  const addFormDirectiva = () => {
-    let formDirectiva = {
-        fechaDirectiva:valueFecha,
-        idAsignacionAvion:1,
-        idEstadoDir:1,
-    }
-    setArrayForms((prevForms: any) => [...prevForms, formDirectiva]);
-  };
+
   const nextStep = () => {
     if (active < 3) {
-      addFormDirectiva();
       setActive(current => current + 1);
     }
   };
 
   const prevStep = () => {
     if (active > 0) {
-      setArrayForms((prevForms: any) => prevForms.slice(0, -1));
       setActive(current => current - 1);
     }
   };
 
   const handleRegister = async () => {
-    console.log(arrayForms);
     if (!valueMotivo || !valueFecha || !valueHora) {
         notifications.show({
             color: 'red',
@@ -48,27 +43,39 @@ function StepperDirectivas() {
           });
     }
         else {
+          console.log(session?.user.id);
 
-        const directiva = {
-            //nombreTipoDirectiva: valueNombreDirectiva,
-            //descripTipoDirectiva: valueDescripcionDirectiva,
+        const cita = {
+          Fecha : valueFecha,
+          EstadoCita : 1,
+          IDPaciente: session?.user.id,
+          Motivo: valueMotivo,
+          Descripcion: valueDescripcion,
+          Hora: valueHora,
+          IDProfesional: 1,
         };
+        console.log(session?.user.id);
     
-        try {
+        const { data } = await client.mutate({
+          mutation: INSERT_CITA,
+          variables: { object: cita}
+        });
+        if (data) {
+          setValue(false);
             notifications.show({
             color: 'green',
-            title: 'Tipo Directiva Registrada',
+            title: 'Cita agendada',
             message: <>
+            Su cita ha sido agendada con exito
             </>,
             icon: <IconCheck size="1rem" />,
             autoClose: false
             });
-        } catch (error) {
-            console.log(error);
+        } else {
             notifications.show({
                 color: 'red',
-                title: 'Error en el registro',
-                message: 'Hubo un error registrando la directiva',
+                title: 'Error en el agendado',
+                message: 'Hubo un error agendando la cita',
                 icon: <IconX size="1rem" />,
                 autoClose: false
                 });
@@ -95,8 +102,10 @@ function StepperDirectivas() {
           ></Selector>
             <Textarea
               label="Descripción"
-              description="Input description"
+              description="Describa su caso"
               placeholder="Añada una descripción más de su caso"
+              value={valueDescripcion}
+              onChange={(event) => setValueDescripcion(event.currentTarget.value)}
             />
         </Flex>
         </Stepper.Step>
@@ -131,6 +140,8 @@ function StepperDirectivas() {
             <TimeInput
               variant="filled"
               label="Hora de la cita"
+              value={valueHora}
+              onChange={(event) => setValueHora(event.currentTarget.value)}
               description="Seleccione la hora más adecuada para su cita"
               placeholder="Seleccione la hora"
             />
