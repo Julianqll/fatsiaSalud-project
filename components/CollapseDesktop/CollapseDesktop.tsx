@@ -21,7 +21,6 @@ import { ActionToggle } from '../ActionToggle/ActionToggle';
   const mockdata_paciente = [
     { label: 'Citas', icon: IconReportMedical, link: '/citas'},
     { label: 'Prescripciones', icon: IconMedicineSyrup , link: '/prescripciones'},
-    { label: 'Historial Médico', icon: IconNotes , link: '/historial-medico'},
   ];
 
 

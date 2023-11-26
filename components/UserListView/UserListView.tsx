@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/client';
 import { useSession } from 'next-auth/react';
 import { IconFileInfo } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
-import { CITA_MEDICO } from '../../queries/queriesCita';
+import { CITA_MEDICO, CITA_MEDICO_MORE, CITA_PACIENTE } from '../../queries/queriesCita';
 
 export default function UserListView({type}: any) {
     const router = useRouter();
@@ -20,12 +20,18 @@ export default function UserListView({type}: any) {
     {       
         query_type = CITA_MEDICO;
         title = "Citas del mes";
-
+        variables = false;
     }
-    else if (type === 'formularios_por_tecnico')
+    if (type === 'citas_medico_more')
+    {       
+        query_type = CITA_MEDICO_MORE;
+        title = "Citas agendadas";
+        variables = false;
+    }
+    else if (type === 'citas_paciente')
     {
-        query_type = CITA_MEDICO;
-        title = "Formularios asignados";
+        query_type = CITA_PACIENTE;
+        title = "Citas agendadas";
         variables = true;
     }
 
@@ -44,7 +50,7 @@ export default function UserListView({type}: any) {
     return (
         <div className={classes.container}>
             <div>
-                <Text size="xl" className={classes.header}>{title} registrados</Text>
+                <Text size="xl" className={classes.header}>{title}</Text>
                 {type === "usuarios"?
                                 <Button 
                                 ml={15} 
