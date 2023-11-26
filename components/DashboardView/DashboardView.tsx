@@ -1,21 +1,25 @@
 // Reportes.js
 "use client";
-import { Paper, Text, Grid, Flex, rem } from '@mantine/core';
+import { Paper, Text, Grid, Flex, rem, Group, Button } from '@mantine/core';
 import classes from './DashboardView.module.css';
 import { PieChart } from '../PieChart/PieChart';
 import { TableReviews } from '../TableReviews/TableReviews';
 import UserListView from '../UserListView/UserListView';
 import { useSession } from 'next-auth/react';
+import { IconFilePercent } from '@tabler/icons-react';
+import { EmailBanner } from '../EmailBanner/EmailBanner';
+import StepperDirectivas from '../StepperDirectivas/StepperDirectivas';
 
 export default function DashboardView() {
     const {data : session} = useSession();
     let table_type;
     let dataGraphs;
     let data;
+    const Icon = IconFilePercent;
 
   if (session?.user.rol == 2)
   {
-    table_type = "formularios";
+    table_type = "citas_medico";
     dataGraphs = {
         cantidad1: "10+",
         descrip1: "Aviones inspeccionados",
@@ -29,17 +33,11 @@ export default function DashboardView() {
             label: '# de aviones',
             data: [12, 3],
             backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
               'rgba(75, 192, 192, 0.2)',
               'rgba(153, 102, 255, 0.2)',
               'rgba(255, 159, 64, 0.2)',
             ],
             borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
               'rgba(75, 192, 192, 1)',
               'rgba(153, 102, 255, 1)',
               'rgba(255, 159, 64, 1)',
@@ -55,19 +53,40 @@ export default function DashboardView() {
           {session?.user.rol == 2 ?
           <>
             <Text size="xl" className={classes.header}>Reportes médicos</Text>
-
             <Grid align='center' columns={12} gutter="xs" className={classes.metricsWrapper}>
                 <Grid.Col span={4}>
-                <Flex gap={"100px"} mt={"30px"} direction="column" align="center" style={{ height: '350px' }}>
-                        <div>
-                            <Text size="xl">{dataGraphs?.cantidad1}</Text>
-                            <Text>{dataGraphs?.descrip1}</Text>
-                        </div>
-                        <div>
-                            <Text size="xl">{dataGraphs?.cantidad2}</Text>
-                            <Text>{dataGraphs?.descrip2}</Text>
-                        </div>
-                    </Flex>
+                <Paper withBorder p="md" mb={30} radius="md">
+                  <Group justify="space-between">
+                    <Text size="xs" c="dimmed" className={classes.title}>
+                      Título
+                    </Text>
+                    <Icon className={classes.icon} size="1.4rem" stroke={1.5} />
+                  </Group>
+
+                  <Group align="flex-end" gap="xs" mt={25}>
+                    <Text c='teal' className={classes.value}>Value</Text>
+                  </Group>
+
+                  <Text fz="xs" c="dimmed" mt={7}>
+                    Procedimiento
+                  </Text>
+                </Paper>
+                <Paper withBorder p="md" radius="md">
+                  <Group justify="space-between">
+                    <Text size="xs" c="dimmed" className={classes.title}>
+                      Título
+                    </Text>
+                    <Icon className={classes.icon} size="1.4rem" stroke={1.5} />
+                  </Group>
+
+                  <Group align="flex-end" gap="xs" mt={25}>
+                    <Text c='teal' className={classes.value}>Value</Text>
+                  </Group>
+
+                  <Text fz="xs" c="dimmed" mt={7}>
+                    Procedimiento
+                  </Text>
+                </Paper>
                 </Grid.Col>
                 <Grid.Col span={8} mb={"30px"}>
                     <Paper className={classes.chartWrapper}>
@@ -77,9 +96,15 @@ export default function DashboardView() {
                 </Grid.Col>
             </Grid>
 
+            <UserListView type={table_type}></UserListView>
+
+
           </>
            :
-            <div>Paciente view</div>
+            <div>
+              <StepperDirectivas></StepperDirectivas>
+              <EmailBanner></EmailBanner>
+            </div>
            }
 
         </div>

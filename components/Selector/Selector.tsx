@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { DocumentNode, useQuery } from "@apollo/client";
 import { Combobox, InputBase, Input, useCombobox, Text } from "@mantine/core";
-import { GET_ROL } from "../../queries/rolQuery";
-import { GET_TIPOS_DOCUMENTO } from "../../queries/tipoDocumentoQuery";
-import { GET_TECNICOS } from "../../queries/usuarioQuery";
+import { GET_MOTIVO } from "../../queries/queriesMotivo";
 
 interface SelectorProps {
   type: string;
@@ -17,24 +15,10 @@ const Selector: React.FC<SelectorProps> = ({ type, value, setValue }) => {
   let query_type : DocumentNode;
   let onOptionSubmit;
 
-  if (type === "rol")
+  if (type === "motivo")
   {
-    query_type = GET_ROL;
-    nombre_selector = "Rol";
-  }
-  else if (type === "estadoCambioPartes")
-  {
-
-  }
-  else if (type === "tipoDocumento")
-  {
-    query_type = GET_TIPOS_DOCUMENTO;
-    nombre_selector = "Tipo Documento";
-  }
-  else if (type === "tecnico")
-  {
-    query_type = GET_TECNICOS;
-    nombre_selector = "Tecnicos";
+    query_type = GET_MOTIVO;
+    nombre_selector = "Motivo";
   }
 
   const { data, loading, error } = useQuery(query_type!);
@@ -45,51 +29,16 @@ const Selector: React.FC<SelectorProps> = ({ type, value, setValue }) => {
 
   let options = [];
 
-  if (type === "rol")
+  if (type === "motivo")
   {
-    options = data && data.rol ? data.rol.map((item: any) => (
-      <Combobox.Option value={item.idRol} key={item.idRol}>
-        {item.nombre}
+    options = data && data.Motivo ? data.Motivo.map((item: any) => (
+      <Combobox.Option value={item.IdMotivo} key={item.IdMotivo}>
+        {item.MotivoDescrip}
       </Combobox.Option>
     )) : [];  
 
     onOptionSubmit = (val:any) => {
-      const selectedText = data.rol.find((item: { idRol: any; }) => item.idRol === val)?.nombre;
-      setSelectedOption({ id: val, text: selectedText || '' });
-      setValue(val);
-      combobox.closeDropdown();
-    };
-
-  }
-  else if (type === "estadoCambioPartes")
-  {
-
-  }
-  else if (type === "tipoDocumento")
-  {
-    options = data && data.tipoDocumento ? data.tipoDocumento.map((item: any) => (
-      <Combobox.Option value={item.idTipoDocumento} key={item.idTipoDocumento}>
-        {item.tipoDocumento}
-      </Combobox.Option>
-    )) : [];  
-
-    onOptionSubmit = (val:any) => {
-      const selectedText = data.tipoDocumento.find((item: { idTipoDocumento: any; }) => item.idTipoDocumento === val)?.tipoDocumento;
-      setSelectedOption({ id: val, text: selectedText || '' });
-      setValue(val);
-      combobox.closeDropdown();
-    };
-  }
-  else if (type === "tecnico")
-  {
-    options = data && data.usuario ? data.usuario.map((item: any) => (
-      <Combobox.Option value={item.idUsuario} key={item.idUsuario}>
-        {item.nombres} {item.apellidos}
-      </Combobox.Option>
-    )) : [];  
-
-    onOptionSubmit = (val:any) => {
-      const selectedText = data.usuario.find((item: { idUsuario: any; }) => item.idUsuario === val)?.nombres + ' '+ data.usuario.find((item: { idUsuario: any; }) => item.idUsuario === val)?.apellidos;
+      const selectedText = data.Motivo.find((item: { IdMotivo: any; }) => item.IdMotivo === val)?.MotivoDescrip;
       setSelectedOption({ id: val, text: selectedText || '' });
       setValue(val);
       combobox.closeDropdown();

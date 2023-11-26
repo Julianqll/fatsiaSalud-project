@@ -20,3 +20,17 @@ mutation InsertCita($object: CitaMedica_insert_input = {}) {
     }
   }
 `;
+
+export const CITA_MEDICO = gql`
+query CitaXMedico($_eq: Int) {
+  CitaMedica(where: {Profesional: {IdProfesional: {_eq: $_eq}}}) {
+    Fecha
+    Hora
+    Motivo
+    IDCita
+    TipoEstadoCitum {
+      DescripEstadoCita
+    }
+  }
+}
+`;
