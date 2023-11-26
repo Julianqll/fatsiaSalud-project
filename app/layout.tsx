@@ -10,8 +10,8 @@ import { ProviderBack } from "../components/ProviderBack";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export const metadata = {
-  title: "AeroGuard",
-  description: "Mantenimiento de aviones",
+  title: "Fatsia Salud",
+  description: "Clínica terapeutica",
 };
 
 export default async function RootLayout({ children }: { children: any }) {

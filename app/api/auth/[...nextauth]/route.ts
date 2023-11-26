@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client";
 import NextAuth, { NextAuthOptions, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { SIGNIN_USER } from "../../../../queries/usuarioQuery";
 import { client } from "../../../../apolloClient";
 import bcrypt from "bcryptjs";
 import { JWT } from "next-auth/jwt";
+import { SIGN_IN } from "../../../../queries/queriesGenerales";
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -22,23 +22,39 @@ export const authOptions: NextAuthOptions = {
           async authorize(credentials, req) {
             try {
               const { data } = await client.query({
-                query: SIGNIN_USER,
+                query: SIGN_IN,
                 variables: {
-                  email: credentials!.username,
+                  _eq: credentials!.username,
                 }
               });
           
-              if (data && data.usuario.length > 0) {
-                let passwordMatches = await bcrypt.compare(credentials!.password, data.usuario[0].contrasena);
+              if (data && data.Usuario.length > 0) {
+                console.log(data.Usuario)
+                let passwordMatches = await bcrypt.compare(credentials!.password, data.Usuario[0].Contrasena);
                 if (passwordMatches)
                 {
-                  const user = {
-                    id: data.usuario[0].idUsuario, // Assuming your user has an id field.
-                    name: `${data.usuario[0].nombres} ${data.usuario[0].apellidos}`,
-                    email: data.usuario[0].correo,
-                    rol: data.usuario[0].idRol,
-                  };
-                  return user;
+                  if (data.Usuario[0].TipoUsuario == 1)
+                  {
+                    //paciente
+                    const user = {
+                      id: data.Usuario[0].Pacientes[0].IdPaciente, // Assuming your user has an id field.
+                      name: `${data.Usuario[0].Pacientes[0].Nombres} ${data.Usuario[0].Pacientes[0].Apellidos}`,
+                      email: data.Usuario[0].Correo,
+                      rol: data.Usuario[0].TipoUsuario,
+                    };
+                    return user;
+                  }
+                  else 
+                  {
+                    //profesinal
+                    const user = {
+                      id: data.Usuario[0].Profesionals[0].IdProfesional, // Assuming your user has an id field.
+                      name: `${data.Usuario[0].Profesionals[0].Nombres} ${data.Usuario[0].Profesionals[0].Apellidos}`,
+                      email: data.Usuario[0].Correo,
+                      rol: data.Usuario[0].TipoUsuario,
+                    };
+                    return user;
+                  }
                 }else {
                   throw new Error("Las credenciales proporcionadas son incorrectas.");
                 }
