@@ -54,7 +54,7 @@ export function AuthenticationImage() {
     return (
       <div className={classes.wrapper}>
         <Title order={2} className={classes.topLeftText} ta="center" mt="md" m={20}>
-          AeroGuard
+          Fatsia Salud
         </Title>
         <Paper className={classes.form} radius={0} p={30}>
           <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>

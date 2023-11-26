@@ -9,12 +9,12 @@ export function HeroImageBackground() {
 
       <div className={classes.inner}>
         <Title className={classes.title}>
-          AeroGuard
+          Fatsia Salud
         </Title>
 
         <Container size={640}>
           <Text size="lg" className={classes.description}>
-          En Aeroguard, entendemos la pasión y la responsabilidad que conlleva volar. Nuestra plataforma innovadora está diseñada específicamente para propietarios, operadores y técnicos de avionetas, brindando una solución integral para el mantenimiento, gestión y seguimiento del estado de tus aeronaves
+          Clínica Fatsia es un centro de referencia en fisioterapia y diagnóstico avanzado. Nuestra misión es proporcionar servicios de salud de la más alta calidad, centrados en la atención personalizada y el uso de tecnologías de vanguardia.
           </Text>
         </Container>
 
