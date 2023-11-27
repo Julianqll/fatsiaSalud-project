@@ -48,7 +48,7 @@ export const authOptions: NextAuthOptions = {
                   {
                     //profesinal
                     const user = {
-                      id: data.Usuario[0].Profesionals[0].IDProfesional, // Assuming your user has an id field.
+                      id: data.Usuario[0].Profesionals[0].IdProfesional, // Assuming your user has an id field.
                       name: `${data.Usuario[0].Profesionals[0].Nombres} ${data.Usuario[0].Profesionals[0].Apellidos}`,
                       email: data.Usuario[0].Correo,
                       rol: data.Usuario[0].TipoUsuario,

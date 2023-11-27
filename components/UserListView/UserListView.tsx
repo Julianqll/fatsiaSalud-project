@@ -21,13 +21,13 @@ export default function UserListView({type}: any) {
     {       
         query_type = CITA_MEDICO;
         title = "Citas del mes";
-        variables = false;
+        variables = true;
     }
     if (type === 'citas_medico_more')
     {       
         query_type = CITA_MEDICO_MORE;
         title = "Citas agendadas";
-        variables = false;
+        variables = true;
     }
     else if (type === 'citas_paciente')
     {
