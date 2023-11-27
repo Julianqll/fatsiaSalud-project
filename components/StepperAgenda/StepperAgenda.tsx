@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Stepper, Button, Group, Textarea, Flex } from '@mantine/core';
-import FormularioDirectivas from '../FormularioDirectivas/FormularioDirectivas';
 import { useQuery } from '@apollo/client';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';

@@ -3,12 +3,11 @@
 import { Paper, Text, Grid, Flex, rem, Group, Button } from '@mantine/core';
 import classes from './DashboardView.module.css';
 import { PieChart } from '../PieChart/PieChart';
-import { TableReviews } from '../TableReviews/TableReviews';
 import UserListView from '../UserListView/UserListView';
 import { useSession } from 'next-auth/react';
 import { IconFilePercent } from '@tabler/icons-react';
 import { EmailBanner } from '../EmailBanner/EmailBanner';
-import StepperDirectivas from '../StepperDirectivas/StepperDirectivas';
+import StepperDirectivas from '../StepperAgenda/StepperAgenda';
 import { useState } from 'react';
 
 export default function DashboardView() {
@@ -24,15 +23,15 @@ export default function DashboardView() {
     table_type = "citas_medico";
     dataGraphs = {
         cantidad1: "10+",
-        descrip1: "Aviones inspeccionados",
-        cantidad2: "1+",
-        descrip2: "Informes requeridos"
+        descrip1: "Citas agendadas",
+        cantidad2: "5+",
+        descrip2: "Prescripciones asignadas"
     }
      data = {
-        labels: ['Aviones inspeccionados', 'Aviones en mal estado'],
+        labels: ['Citas atendidas', 'Citas pendientes'],
         datasets: [
           {
-            label: '# de aviones',
+            label: '# de citas',
             data: [12, 3],
             backgroundColor: [
               'rgba(75, 192, 192, 0.2)',
@@ -60,39 +59,39 @@ export default function DashboardView() {
                 <Paper withBorder p="md" mb={30} radius="md">
                   <Group justify="space-between">
                     <Text size="xs" c="dimmed" className={classes.title}>
-                      Título
+                      {dataGraphs!.descrip1}
                     </Text>
                     <Icon className={classes.icon} size="1.4rem" stroke={1.5} />
                   </Group>
 
                   <Group align="flex-end" gap="xs" mt={25}>
-                    <Text c='teal' className={classes.value}>Value</Text>
+                    <Text c='teal' className={classes.value}>{dataGraphs!.cantidad1}</Text>
                   </Group>
 
                   <Text fz="xs" c="dimmed" mt={7}>
-                    Procedimiento
+                  Frente al anterior periodo
                   </Text>
                 </Paper>
                 <Paper withBorder p="md" radius="md">
                   <Group justify="space-between">
                     <Text size="xs" c="dimmed" className={classes.title}>
-                      Título
+                    {dataGraphs!.descrip2}
                     </Text>
                     <Icon className={classes.icon} size="1.4rem" stroke={1.5} />
                   </Group>
 
                   <Group align="flex-end" gap="xs" mt={25}>
-                    <Text c='teal' className={classes.value}>Value</Text>
+                    <Text c='teal' className={classes.value}>{dataGraphs!.cantidad2}</Text>
                   </Group>
 
                   <Text fz="xs" c="dimmed" mt={7}>
-                    Procedimiento
+                    Frente al anterior periodo
                   </Text>
                 </Paper>
                 </Grid.Col>
                 <Grid.Col span={8} mb={"30px"}>
                     <Paper className={classes.chartWrapper}>
-                        <Text>Rendimiento del mes</Text>
+                        <Text>Citas en el mes</Text>
                         {PieChart(data)}
                     </Paper>
                 </Grid.Col>
