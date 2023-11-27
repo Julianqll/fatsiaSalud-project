@@ -64,14 +64,14 @@ export default function UserListView({type}: any) {
         <div className={classes.container}>
             <div>
                 <Text size="xl" className={classes.header}>{title}</Text>
-                {type === "usuarios"?
-                                <Button 
-                                ml={15} 
-                                rightSection={<IconFileInfo size={14} />} 
-                                onClick={() => router.push(`/registro`)}
-                                >
-                                Registrar Usuario
-                                </Button>
+                {type === "prescripciones_medico"?
+                    <Button 
+                    ml={15} 
+                    rightSection={<IconFileInfo size={14} />} 
+                    onClick={() => router.push(`/registro-prescripcion`)}
+                    >
+                    Registrar prescripcion
+                    </Button>
                 :
                 null}
                 <TableSelection type={type} data={data}></TableSelection>

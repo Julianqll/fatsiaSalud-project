@@ -4,42 +4,27 @@ import { Button, Flex} from "@mantine/core";
 import { useMutation } from "@apollo/client";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
-import bcrypt from "bcryptjs";
-import { isValidDNI, isValidEmail, isValidPhone } from "../../utils/validators";
-import { fetchPersonData } from "../../external_apis/reniec";
-import { INSERT_USUARIO } from "../../queries/usuarioQuery";
 import InputFields from "../InputFields/InputFields";
 import Selector from "../Selector/Selector";
+import { useSession } from "next-auth/react";
+import { client } from "../../apolloClient";
+import { INSERT_PRESCRIPCION } from "../../queries/queriesPrescripcion";
+import { useRouter } from "next/navigation";
 
-function FormularioRegistro() {
-    const [valueNames, setValueNames] = useState('');
-    const [valueLastName, setValueLastName] = useState('');
-    const [valueDocumento, setValueDocumento] = useState('');
-    const [valueStreet, setValueStreet] = useState('');
-    const [valueEmail, setValueEmail] = useState('');
-    const [valueTelephone, setValueTelephone] = useState('');
-    const [valueRol, setValueRol] = useState<string | null>(null);
-    const [valueTipoDocumento, setValueTipoDocumento] = useState<string | null>(null);
-    const [addUser, { data, loading, error }] = useMutation(INSERT_USUARIO);
+function FormularioRegistroPrescripcion() {
+  const {data : session} = useSession();
+  const router = useRouter();
 
-    useEffect(() => {
-      if (isValidDNI(valueDocumento)) {
-        const fetchData = async () => {
-          const data = await fetchPersonData(valueDocumento);
-          setValueNames(capitalize(data.nombres));
-          setValueLastName(capitalize(data.apellidoPaterno + " " + data.apellidoMaterno));
-        };
-        fetchData();
-      }
-    }, [valueDocumento]);
-    
-    function capitalize(str:string) {
-      return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-    }
+    const [valueMedicamento, setValueMedicamento] = useState('');
+    const [valueDosis, setValueDosis] = useState('');
+    const [valueFrecuencia, setValueFrecuencia] = useState('');
+    const [valueDuracion, setValueDuracion] = useState('');
+    const [valuePaciente, setValuePaciente] = useState<string | null>('');
+    const [valueFecha, setValueFecha] = useState<Date | null>(new Date());
   
 
   const handleRegister = async () => {
-    if (!valueNames || !valueLastName || !valueDocumento || !valueStreet || !valueEmail || !valueTelephone || !valueRol || !valueTipoDocumento) {
+    if (!valueMedicamento || !valueDosis || !valueFrecuencia || !valueDuracion || !valuePaciente || !valueFecha) {
         notifications.show({
             color: 'red',
             title: 'Completar campos',
@@ -47,66 +32,38 @@ function FormularioRegistro() {
             icon: <IconX size="1rem" />,
             autoClose: false
           });
-    } else if (!isValidEmail(valueEmail)) {
-        notifications.show({
-            color: 'red',
-            title: 'Campo inválido',
-            message: 'El correo electrónico ingresado es inválido',
-            icon: <IconX size="1rem" />,
-            autoClose: false
-          });
-    } else if (!isValidPhone(valueTelephone)) {
-        notifications.show({
-            color: 'red',
-            title: 'Campo inválido',
-            message: 'El número de teléfono ingresado es inválido',
-            icon: <IconX size="1rem" />,
-            autoClose: false
-          });
-        } else if (!isValidDNI(valueDocumento)) {
-            notifications.show({
-                color: 'red',
-                title: 'Campo inválido',
-                message: 'El DNI ingresado es inválido',
-                icon: <IconX size="1rem" />,
-                autoClose: false
-              });    
-        }
+    }
          else {
-            //const randomPassword = generateRandomPassword();
-            const randomPassword = "123456"
-            const hashedPassword = await bcrypt.hash(randomPassword, 10);
 
-            const user = {
-              nombres: valueNames,
-              apellidos: valueLastName,
-              correo: valueEmail,
-              contrasena: hashedPassword,
-              direccion: valueStreet,
-              telefono: valueTelephone,
-              idRol: valueRol,
-              numeroDocumento: valueDocumento,
-              estado: true,
-              tipoDocumento: valueTipoDocumento
+            const prescripcion = {
+              Fecha: valueFecha,
+              Medicamento: valueMedicamento,
+              Dosis: valueDosis,
+              Frecuencia: valueFrecuencia,
+              Duracion: valueDuracion,
+              IdProfesional: session?.user.id,
+              IdPaciente: valuePaciente,
             };
         
-            try {
-              const response = await addUser({ variables: { object: user } });
+            const { data } = await client.mutate({
+              mutation: INSERT_PRESCRIPCION,
+              variables: { object: prescripcion}
+            });
+            if (data) {
               notifications.show({
                 color: 'green',
-                title: 'Usuario Registrado',
+                title: 'Prescripción Registrada',
                 message: <>
-                El Usuario {response.data.insert_usuario_one.nombres} {response.data.insert_usuario_one.apellidos}, se registró con éxito
+                La prescripcion se registró con éxito
                 </>,
                 icon: <IconCheck size="1rem" />,
                 autoClose: false
               });
-            } catch (error) {
-              console.log(error);
+            } else {
                 notifications.show({
                     color: 'red',
                     title: 'Error en el registro',
-                    message: 'Hubo un error registrando al usuario',
+                    message: 'Hubo un error registrando la prescripcion',
                     icon: <IconX size="1rem" />,
                     autoClose: false
                   });
@@ -118,15 +75,16 @@ function FormularioRegistro() {
     <div>
       <Flex direction="column" align="center" style={{ gap: "20px" }}>
         <InputFields 
-          values={{ valueNames, valueLastName, valueEmail, valueTelephone, valueDocumento, valueStreet, valueTipoDocumento}}
-          setters={{ setValueNames, setValueLastName, setValueEmail, setValueTelephone, setValueDocumento, setValueStreet, setValueTipoDocumento}}
+          values={{ valueMedicamento ,valueDosis ,valueFrecuencia ,valueDuracion ,valueFecha}}
+          setters={{ setValueMedicamento ,setValueDosis ,setValueFrecuencia ,setValueDuracion ,setValueFecha}}
         />
-        <Selector type="rol" value={valueRol} setValue={setValueRol} />
-        <Button onClick={handleRegister}>Registrar usuario</Button>
+        <Selector type="paciente" value={valuePaciente} setValue={setValuePaciente} />
+        <Button onClick={() => router.push(`/prescripciones`)}>Volver</Button>
+        <Button onClick={handleRegister}>Registrar prescripción</Button>
       </Flex>
     </div>
   );
 
 }
 
-export default FormularioRegistro;
+export default FormularioRegistroPrescripcion;

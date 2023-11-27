@@ -1,16 +1,20 @@
 import { gql } from '@apollo/client';
 
 export const SELECT_PACIENTE = gql`
-query SelectPaciente {
-    CitaMedica {
-      Fecha
-      Hora
-      IDCita
-      IDPaciente
-      IDProfesional
-      Motivo
-    }
+query GetPaciente {
+  Paciente {
+    FechaNac
+		IDPaciente
+		Telefono
+		UsuarioId
+		Alergias
+		Apellidos
+		DNI
+		Direccion
+		Nombres
   }
+}
+   
 `;
 
 export const INSERT_PACIENTE = gql`

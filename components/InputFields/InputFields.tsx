@@ -1,42 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { TextInput, Flex } from "@mantine/core";
 import Selector from "../Selector/Selector";
+import { DateInput } from "@mantine/dates";
 
 interface InputFieldsProps {
   values: {
-    valueNames: string;
-    valueLastName: string;
-    valueEmail: string;
-    valueTelephone: string;
-    valueDocumento: string;
-    valueStreet: string;
-    valueTipoDocumento: string | null;
+    valueMedicamento: string ;
+    valueDosis: string ;
+    valueFrecuencia: string;
+    valueDuracion: string;
+    valueFecha: Date | null;
   };
   setters: {
-    setValueNames: React.Dispatch<React.SetStateAction<string>>;
-    setValueLastName: React.Dispatch<React.SetStateAction<string>>;
-    setValueEmail: React.Dispatch<React.SetStateAction<string>>;
-    setValueTelephone: React.Dispatch<React.SetStateAction<string>>;
-    setValueDocumento: React.Dispatch<React.SetStateAction<string>>;
-    setValueStreet: React.Dispatch<React.SetStateAction<string>>;
-    setValueTipoDocumento: React.Dispatch<React.SetStateAction<string | null>>;
+    setValueMedicamento: React.Dispatch<React.SetStateAction<string>>;
+    setValueDosis: React.Dispatch<React.SetStateAction<string>>;
+    setValueFrecuencia: React.Dispatch<React.SetStateAction<string>>;
+    setValueDuracion: React.Dispatch<React.SetStateAction<string>>;
+    setValueFecha: React.Dispatch<React.SetStateAction<Date | null>>;
   };
 }
 
 const InputFields: React.FC<InputFieldsProps> = ({ values, setters }) => {
-  const [isDNIEnabled, setIsDNIEnabled] = useState(true);
-  
-  useEffect(() => {
-    if (values.valueTipoDocumento == "DNI")
-    {
-      setIsDNIEnabled(true);
-    }
-    else if (values.valueTipoDocumento == "Carnet de Extranjeria")
-    {
-      setIsDNIEnabled(false);
-    }
-  }, [values.valueTipoDocumento]);
-
 
 
   return (
@@ -44,48 +28,40 @@ const InputFields: React.FC<InputFieldsProps> = ({ values, setters }) => {
       <Flex direction="column" align="center" style={{ gap: "20px" }}>
         <Flex mih={50} gap="xl" justify="center" align="flex-start" direction="row" wrap="wrap">
           <TextInput
-            disabled={isDNIEnabled}
-            label="Nombres"
-            placeholder="Tus nombres"
-            value={values.valueNames}
-            onChange={(event) => setters.setValueNames(event.currentTarget.value)}
+            label="Medicamento"
+            placeholder="Ingrese el medicamento"
+            value={values.valueMedicamento}
+            onChange={(event) => setters.setValueMedicamento(event.currentTarget.value)}
           />
           <TextInput
-            disabled={isDNIEnabled}
-            label="Apellidos"
-            placeholder="Tus apellidos"
-            value={values.valueLastName}
-            onChange={(event) => setters.setValueLastName(event.currentTarget.value)}
+            label="Dosis"
+            placeholder="Ingrese la dosis"
+            value={values.valueDosis}
+            onChange={(event) => setters.setValueDosis(event.currentTarget.value)}
           />
         </Flex>
         <Flex mih={50} gap="xl" justify="center" align="flex-start" direction="row" wrap="wrap">
           <TextInput
-            label="Correo"
-            placeholder="Tu correo"
-            value={values.valueEmail}
-            onChange={(event) => setters.setValueEmail(event.currentTarget.value)}
+            label="Frecuencia"
+            placeholder="Ingrese la frecuencia"
+            value={values.valueFrecuencia}
+            onChange={(event) => setters.setValueFrecuencia(event.currentTarget.value)}
           />
           <TextInput
-            label="Teléfono"
-            placeholder="Tu teléfono"
-            value={values.valueTelephone}
-            onChange={(event) => setters.setValueTelephone(event.currentTarget.value)}
+            label="Duracion"
+            placeholder="Ingrese la duración"
+            value={values.valueDuracion}
+            onChange={(event) => setters.setValueDuracion(event.currentTarget.value)}
           />
         </Flex>
         <Flex mih={50} gap="xl" justify="center" align="flex-start" direction="row" wrap="wrap">
-          <TextInput
-            label="DNI"
-            placeholder="Documento de identidad"
-            value={values.valueDocumento}
-            onChange={(event) => setters.setValueDocumento(event.currentTarget.value)}
-          />
-          <Selector type="tipoDocumento" value={values.valueTipoDocumento} setValue={setters.setValueTipoDocumento} />
-          <TextInput
-            label="Dirección"
-            placeholder="Dirección de prueba"
-            value={values.valueStreet}
-            onChange={(event) => setters.setValueStreet(event.currentTarget.value)}
-          />
+          <DateInput
+              description="Seleccione la fecha"
+              value={values.valueFecha}
+              onChange={setters.setValueFecha}
+              label="Fecha de la prescripcion"
+              placeholder="Seleccione la fecha"
+            />
         </Flex>
       </Flex>
     </div>
